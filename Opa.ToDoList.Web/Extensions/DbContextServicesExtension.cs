@@ -19,7 +19,7 @@ namespace Opa.ToDoList.Web.Extensions
             services.AddDbContext<OpaToDoListDataContext>(
                 options =>
                 {
-                    options.UseSqlServer(OpaToDoListConfiguration.Instance.Connection);
+                    options.UseSqlServer(configuration.GetConnectionString(OpaToDoListConfiguration.Instance.Connection));
                 });
 
             return services;

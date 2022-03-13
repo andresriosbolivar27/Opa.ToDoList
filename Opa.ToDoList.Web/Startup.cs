@@ -2,12 +2,20 @@
 namespace Opa.ToDoList.Web
 {
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;   
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Opa.ToDoList.Dal;
+    using Opa.ToDoList.Entities.Business.Entities;
+    using Opa.ToDoList.Entities.Services.Configuration;
+    using Opa.ToDoList.Web.Data;
     using Opa.ToDoList.Web.Extensions;
+    using Opa.ToDoList.Web.Helpers;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -22,7 +30,29 @@ namespace Opa.ToDoList.Web
         {
             services.AddControllersWithViews();
 
-            services.RegisterDbContext(this.Configuration);
+            services.AddIdentity<User, IdentityRole>(cfg =>
+            {
+                //cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+                //cfg.SignIn.RequireConfirmedEmail = true;
+                cfg.User.RequireUniqueEmail = true;
+                cfg.Password.RequireDigit = false;
+                cfg.Password.RequiredUniqueChars = 0;
+                cfg.Password.RequireLowercase = false;
+                cfg.Password.RequireNonAlphanumeric = false;
+                cfg.Password.RequireUppercase = false;
+            })
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<OpaToDoListDataContext>();
+
+            services.AddDbContext<OpaToDoListDataContext>(
+                options =>
+                {
+                    options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
+                });
+
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddTransient<SeedDb>();
+            services.AddScoped<IUserHelper, UserHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,23 +65,21 @@ namespace Opa.ToDoList.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            this.DoMigrations(app);
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseMvc();
         }
 
         private void DoMigrations(IApplicationBuilder app)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Opa.ToDoList.Entities.Business.Entities
 {
-    public class Task
+    public class OpaTask
     {
         public int Id { get; set; }
 

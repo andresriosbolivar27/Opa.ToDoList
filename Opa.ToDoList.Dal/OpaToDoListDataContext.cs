@@ -17,7 +17,7 @@ namespace Opa.ToDoList.Dal
         }  
 
         public DbSet<Owner> Owners { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<OpaTask> Tasks { get; set; }
         public DbSet<TaskCategory> TaskCategories { get; set; }
         public DbSet<TaskState> TaskStates { get; set; }
         public DbSet<Tag> Tags { get; set; }

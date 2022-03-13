@@ -16,7 +16,7 @@ namespace Opa.ToDoList.Entities.Business.Entities
         [Required(ErrorMessage = "The field {0} is mandatory.")]
         public string Name { get; set; }
 
-        public ICollection<Task> Tasks { get; set; }
+        public ICollection<OpaTask> Tasks { get; set; }
 
     }
 }

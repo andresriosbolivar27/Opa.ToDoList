@@ -10,7 +10,7 @@ namespace Opa.ToDoList.Entities.Business.Entities
        
         public string Name { get; set; }
 
-        public ICollection<Task> Tasks { get; set; }
+        public ICollection<OpaTask> Tasks { get; set; }
 
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Opa.ToDoList.Dal;
 
 namespace Opa.ToDoList.Dal.Migrations
 {
     [DbContext(typeof(OpaToDoListDataContext))]
-    partial class OpaToDoListDataContextModelSnapshot : ModelSnapshot
+    [Migration("20220310024431_ChangeNameTaskTable")]
+    partial class ChangeNameTaskTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

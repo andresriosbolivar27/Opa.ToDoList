@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
+             xmlns:styles="clr-namespace:Opa.ToDoList.Prism.Styles"
+             x:Class="Opa.ToDoList.Prism.App">
+    <prism:PrismApplication.Resources>
+        <ResourceDictionary>
+            
+            <!-- Parameters -->
+            <x:String x:Key="UrlAPI">http://192.168.0.7:81/</x:String>
+            
+            <ResourceDictionary.MergedDictionaries>
+                <styles:Theme></styles:Theme>
+                <styles:FontsAwesome></styles:FontsAwesome>
+                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </prism:PrismApplication.Resources>
+</prism:PrismApplication>

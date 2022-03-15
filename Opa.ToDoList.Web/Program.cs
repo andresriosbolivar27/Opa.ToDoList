@@ -4,6 +4,7 @@ namespace Opa.ToDoList.Web
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Opa.ToDoList.Web.Data;
 
     public class Program
@@ -25,8 +26,9 @@ namespace Opa.ToDoList.Web
             }
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
+        }
     }
 }

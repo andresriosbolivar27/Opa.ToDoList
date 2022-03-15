@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:fontawesome="clr-namespace:Opa.ToDoList.Prism"
+             x:Class="Opa.ToDoList.Prism.Views.LoginPage"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <StackLayout
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+            <Grid
+                ColumnDefinitions="Auto, Auto"
+                Margin="20, 10, 0, 10"
+                HorizontalOptions="Start">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+                <Label
+                    Grid.Column="0"
+                    Text="{x:Static fontawesome:FontAwesomeIcons.ArrowLeft}"
+                    FontSize="{StaticResource Headline4FontSize}"
+                    FontFamily="FAS"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"/>                    
+                <Label
+                    Grid.Column="1"
+                    Text="Login"
+                    Style="{StaticResource Headline4_MulishBlack}"
+                    Margin="10, 0, 0, 0"
+                    VerticalOptions="Center">                    
+                </Label>                
+            </Grid>
+            <StackLayout
+            Margin="20, 0, 20, 0"
+            Spacing="5">
+                <Label
+                Text="Email"
+                Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                x:Name="EmailFrame"
+                Style="{StaticResource Base_FrameEntry}">
+                    <Entry
+                    Placeholder="Enter your email"
+                    Text="{Binding Email}"
+                    Style="{StaticResource Base_Entry}">                                               
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>                
+            </StackLayout>
+            <StackLayout
+            Margin="20, 0"
+            Spacing="5">
+                <Label
+                Text="Password"
+                Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                x:Name="PasswordFrame"
+                Style="{StaticResource Base_FrameEntry}">
+                    <Entry
+                    IsPassword="True"
+                    Placeholder="Enter your password"
+                    ReturnCommand="{Binding LoginCommand}"
+                    Text="{Binding Password}"
+                    Style="{StaticResource Base_Entry}">                        
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>                
+            </StackLayout>
+            <Label                
+                HorizontalTextAlignment="Center"
+                Margin="20, 0, 20, 30"
+                TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span
+                            Text="no tengo una cuenta? "
+                            Style="{StaticResource Body1_MulishRegular}"></Span>
+                        <Span
+                            Text="Regístrate"
+                            Style="{StaticResource Base_Link}"></Span>
+                    </FormattedString>
+                </Label.FormattedText>                
+             </Label>
+            <Label                
+                Text="Se te olvidó tu contraseña?"
+                Style="{StaticResource Base_Link}"
+                Margin="20, 10"></Label>
+            <ActivityIndicator
+                IsRunning="{Binding IsRunning}"
+                VerticalOptions="CenterAndExpand"
+                Color="{StaticResource LightButtonColor}">
+                
+            </ActivityIndicator>
+            <Button
+                x:Name="LoginButton"
+                IsEnabled="{Binding IsEnabled}"
+                Command="{Binding LoginCommand}"
+                Margin="20, 0, 20, 10"
+                Text="Login"
+                Style="{StaticResource Base_Button}">
+            </Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

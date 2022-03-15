@@ -1,11 +1,8 @@
 ﻿
 namespace Opa.ToDoList.Web.Helpers
 {
-    using System.Security.Claims;
-    using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.Extensions.Logging;
     using Opa.ToDoList.Entities.Business.Entities;
     using Task = System.Threading.Tasks.Task;
     using Opa.ToDoList.Web.Models;

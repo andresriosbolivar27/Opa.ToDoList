@@ -11,9 +11,7 @@ namespace Opa.ToDoList.Web
     using Microsoft.Extensions.Hosting;
     using Opa.ToDoList.Dal;
     using Opa.ToDoList.Entities.Business.Entities;
-    using Opa.ToDoList.Entities.Services.Configuration;
     using Opa.ToDoList.Web.Data;
-    using Opa.ToDoList.Web.Extensions;
     using Opa.ToDoList.Web.Helpers;
 
     public class Startup
@@ -41,7 +39,6 @@ namespace Opa.ToDoList.Web
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequireUppercase = false;
             })
-                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<OpaToDoListDataContext>();
 
             services.AddDbContext<OpaToDoListDataContext>(
@@ -71,6 +68,12 @@ namespace Opa.ToDoList.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseCors(
+                    builder => builder
+                    .SetIsOriginAllowed(origin => true)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

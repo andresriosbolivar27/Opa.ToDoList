@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Opa.ToDoList.Prism.Views.WelcomePage"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Content>
+        <Grid
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+            RowDefinitions="*, Auto, Auto, Auto">
+            <Image
+                Grid.Row="0"
+                Aspect="AspectFit"
+                HorizontalOptions="EndAndExpand"
+                Source="welcome"
+                Margin="20, 0, 0, 0">
+                
+            </Image>
+            <Label
+                Grid.Row="1"
+                HorizontalTextAlignment="Center"
+                Margin="30, 20, 30, 10"
+                Style="{StaticResource Headline4_MulishBlack}"
+                Text="Manage your daily tasks in one place"></Label>
+            <Label
+                Grid.Row="2"
+                HorizontalTextAlignment="Center"
+                Margin="0, 0, 0, 30"
+                Style="{StaticResource Body1_MulishRegular}"
+                Text="Organize your daily tasks with ToDo app."
+                TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}">
+             </Label>
+            <Button
+                BackgroundColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                Command="{Binding LoginCommand}"
+                Grid.Row="3"
+                Margin="20, 0, 20, 30"
+                Text="Login"
+                VerticalOptions="End"
+                Style="{StaticResource Base_Button}">                
+            </Button>
+        </Grid>
+    </ContentPage.Content>
+
+</ContentPage>

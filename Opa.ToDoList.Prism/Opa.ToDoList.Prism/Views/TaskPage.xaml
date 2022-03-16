@@ -2,7 +2,195 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="Opa.ToDoList.Prism.Views.TaskPage">
-  
+             x:Class="Opa.ToDoList.Prism.Views.TaskPage"
+             xmlns:fontawesome="clr-namespace:Opa.ToDoList.Prism"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+            RowDefinitions="8, 80, 30,*">
+            <Grid
+                Grid.Row="1"
+                ColumnDefinitions="Auto, *, Auto"
+                RowDefinitions="Auto, Auto"
+                RowSpacing="0"
+                Margin="10, 10, 10, 0">
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Text="{x:Static fontawesome:FontAwesomeIcons.UserCircle}"
+                    TextColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                    FontSize="{StaticResource Headline2FontSize}"
+                    FontFamily="FAS"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Margin="5, 0, 5, 0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ProfileCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Style="{StaticResource Body1_MulishBold}"
+                    Text="Hello"
+                    TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}"></Label>
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Margin="0, -2, 0, 0"
+                    Style="{StaticResource Subtitle1_MulishBlack}"
+                    Text="{Binding Name}"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"></Label>
+                <Label
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Text="{x:Static fontawesome:FontAwesomeIcons.EllipsisV}"
+                    TextColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                    FontSize="{StaticResource Headline4FontSize}"
+                    FontFamily="FAS"
+                    VerticalOptions="Center"
+                    Margin="0, 0, 10, 0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MoreCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+            <StackLayout
+                Grid.Row="2"
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                Margin="15, 5, 15, 0">
+                <Label
+                    Style="{StaticResource Subtitle1_MulishBlack}"
+                    Text="Tasks"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"></Label>
+                <Label
+                    Text="Filter"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                    Style="{StaticResource Body1_MulishRegular}"
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="End"></Label>
+            </StackLayout>
+            <StackLayout
+                Grid.Row="2"
+                Padding="5, 0">
+                <CollectionView
+                    x:Name="TaskItems"
+                    ItemsSource="{Binding TaskList}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <SwipeView
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItemView
+                                                Command="{Binding BindingContext.DeleteTaskCommand, Source={x:Reference TaskItems}}"
+                                                CommandParameter="{Binding}">
+                                                <Frame
+                                                    BackgroundColor="Transparent"
+                                                    Padding="15, 0">
+                                                    <Label
+                                                        Text="{x:Static fontawesome:FontAwesomeIcons.TrashAlt}"
+                                                        TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                                        FontSize="{StaticResource Headline4FontSize}"
+                                                        FontFamily="FAS"
+                                                        VerticalTextAlignment="Center">
+                                                    </Label>
+                                                </Frame>
+                                            </SwipeItemView>
+                                            <SwipeItemView 
+                                                Command="{Binding BindingContext.EditTaskCommand, Source={x:Reference TaskItems}}"
+                                                CommandParameter="{Binding}">
+                                                <Frame
+                                                    BackgroundColor="Transparent"
+                                                    Padding="25, 0, 15, 0">
+                                                    <Label
+                                                        Text="{x:Static fontawesome:FontAwesomeIcons.PencilAlt}"
+                                                        TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                                        FontSize="{StaticResource Headline4FontSize}"
+                                                        FontFamily="FAS"
+                                                        VerticalTextAlignment="Center">
+                                                    </Label>
+                                                </Frame>
+                                            </SwipeItemView>
+                                        </SwipeItems>                                        
+                                    </SwipeView.RightItems>
+                                    <Frame
+                                        Padding="10"
+                                        Margin="10, 5"
+                                        CornerRadius="20">
+                                        <Grid
+                                            ColumnDefinitions="Auto, Auto"
+                                            RowDefinitions="Auto, Auto"
+                                            RowSpacing="0">
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Grid.RowSpan="2"
+                                                Text="{Binding Archived, Converter={StaticResource DoneIconConverter}}"
+                                                FontSize="25"
+                                                HorizontalOptions="Start"
+                                                VerticalOptions="Center"
+                                                Margin="10, 0, 0, 0">                                                
+                                            </Label>
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Text="{Binding Task}"
+                                                FontFamily="Mulish_ExtraBold"
+                                                FontSize="{StaticResource Body2FontSize}"
+                                                Margin="10, 0"
+                                                VerticalOptions="Center">
+                                                
+                                            </Label>
+                                            <Label 
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Text="{Binding List}"
+                                                FontFamily="Mulish_Regular"
+                                                FontSize="{StaticResource Body1FontSize}"
+                                                Margin="10, 0"
+                                                VerticalOptions="CenterAndExpand">                                                
+                                            </Label>
+                                        </Grid>
+                                    </Frame>
+                                </SwipeView>
+                            </StackLayout>                            
+                        </DataTemplate>                        
+                    </CollectionView.ItemTemplate>                    
+                </CollectionView>                
+            </StackLayout>
+            <Frame
+                Grid.Row="3" 
+                BackgroundColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                VerticalOptions="End" 
+                HorizontalOptions="End" 
+                CornerRadius="20" 
+                TranslationY="-20" 
+                TranslationX="-20"
+                Padding="20"
+                xct:TouchEffect.NativeAnimation="True">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddCommand}"></TapGestureRecognizer>
+                </Frame.GestureRecognizers>
+                <Label
+                    Text="{x:Static fontawesome:FontAwesomeIcons.Plus}"
+                    FontSize="{StaticResource Headline3FontSize}"
+                    FontFamily="FAS"
+                    TextColor="{AppThemeBinding Light={StaticResource LightButtonTextColor}, Dark={StaticResource DarkButtonTextColor}}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"></Label>
+                
+            </Frame>
+            <CollectionView>
+
+            </CollectionView>
+        </Grid>   
+    </ContentPage.Content>  
 </ContentPage>

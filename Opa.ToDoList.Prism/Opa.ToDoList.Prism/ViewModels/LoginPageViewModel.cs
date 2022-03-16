@@ -79,6 +79,9 @@ namespace Opa.ToDoList.Prism.ViewModels
                 return;
             }
             
+            IsEnabled = false;
+            IsRunning = true;
+
             var ownerResponse = await this.apiService.GetOwnerByEmailAsync(url, "api", "/owners/GetOwnerByEmail", Email);
 
             if (ownerResponse != null)
@@ -92,12 +95,11 @@ namespace Opa.ToDoList.Prism.ViewModels
                     await App.Current.MainPage.DisplayAlert("Error", "Usuario o contraseña incorrectos .", "Aceptar");
                     return;
                 }
-            }
-
-            IsEnabled = false;
-            IsRunning = true;
+            }            
 
             await this.navigationService.NavigateAsync(nameof(TaskPage));
+            IsEnabled = true;
+            IsRunning = false;
         }
     }
 }

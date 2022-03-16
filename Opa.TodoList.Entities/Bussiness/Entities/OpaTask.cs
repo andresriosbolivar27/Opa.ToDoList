@@ -16,6 +16,7 @@ namespace Opa.ToDoList.Entities.Business.Entities
         public TaskCategory Category { get; set; }
 
         public TaskState TaskState { get; set; }
+        public Owner Owner { get; set; }
 
         public ICollection<Tag> Tags { get; set; }
     }

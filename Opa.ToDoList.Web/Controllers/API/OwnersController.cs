@@ -5,8 +5,11 @@ namespace Opa.ToDoList.Web.Controllers.API
     using Microsoft.EntityFrameworkCore;
     using Opa.ToDoList.Common.Models;
     using Opa.ToDoList.Dal;
+    using Opa.ToDoList.Entities.Business.Entities;
     using Opa.ToDoList.Web.Helpers;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [Route("api/[controller]")]
@@ -54,6 +57,10 @@ namespace Opa.ToDoList.Web.Controllers.API
         {
             var owner = await this.dataContext.Owners
                 .Include(u => u.User)
+                .Include(t => t.Tasks)
+                .ThenInclude(c => c.Category)
+                .Include(c => c.Tasks)
+                .ThenInclude(c => c.TaskState)
                 .FirstOrDefaultAsync(o => o.User.UserName.ToLower().Equals(emailRequest.Email.ToLower()));
 
             var response = new OwnerResponse
@@ -66,6 +73,16 @@ namespace Opa.ToDoList.Web.Controllers.API
                 Document = owner.User.Document,
                 Email = owner.User.Email,
                 PhoneNumber = owner.User.PhoneNumber,
+                Tasks = owner.Tasks.Select(t => new OpaTask
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Category = new TaskCategory { Name = t.Category.Name },
+                    CompletedDate = t.CompletedDate,
+                    CreatedDate = t.CreatedDate,
+                    Description = t.Description,
+                    TaskState = new TaskState { Name = t.TaskState.Name }
+                }).OrderByDescending(x => x.Id).ToList()
             };
 
             return Ok(response);

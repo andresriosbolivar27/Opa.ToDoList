@@ -27,16 +27,21 @@ namespace Opa.ToDoList.Web.Data
             await this.context.Database.EnsureCreatedAsync();
             await CheckRoles();
             var owner = await CheckUserAsync("2022", "Andres Felipe", "Rios Bolivar", "nacional12344@gmail.com", "3111234567", "Caldas", "Owner");
-            await CheckOwnersAsync(owner);
             await CheckTaskCategory();
             await CheckTaskStates();
+            await CheckOwnersAsync(owner);
+            
         }
 
         private async Task CheckOwnersAsync(User user)
         {
             if (!this.context.Owners.Any())
             {
-                this.context.Owners.Add(new Owner { User = user, });
+                this.context.Owners.Add(new Owner
+                {
+                    User = user,
+                    Tasks = CheckOwnerTasks(user), 
+                }) ;
                 await this.context.SaveChangesAsync();
             }
         }
@@ -72,36 +77,50 @@ namespace Opa.ToDoList.Web.Data
             return user;
         }
 
-        private async Task CheckOwnerTasks(User user)
+        private ICollection<OpaTask> CheckOwnerTasks(User user)
         {
-            if (!this.context.Tasks.Any())
+            return new List<OpaTask>
             {
-                this.context.Tasks.Add(new OpaTask()
+                new OpaTask()
                 {
-                    Category = await this.context.TaskCategories.FindAsync(1),
+                    Name = "Tarea 1",
+                    Category = this.context.TaskCategories.FirstOrDefault(c => c.Id == 1),
                     CompletedDate = DateTime.Now.AddDays(2),
                     CreatedDate = DateTime.Now,
-                    Description = "Tarea 1",
-                    TaskState = await this.context.TaskStates.FindAsync(1)
-                });
-                this.context.Tasks.Add(new OpaTask()
+                    Description = "Esta es la tarea 1",
+                    TaskState = this.context.TaskStates.FirstOrDefault(t => t.Id == 1),
+                    Owner = new Owner
+                    {
+                        User = user
+                    }
+                },
+                new OpaTask()
                 {
-                    Category = await this.context.TaskCategories.FindAsync(2),
+                    Name = "Tarea 2",
+                    Category = this.context.TaskCategories.FirstOrDefault(c => c.Id == 2),
                     CompletedDate = DateTime.Now.AddDays(3),
                     CreatedDate = DateTime.Now,
-                    Description = "Tarea 2",
-                    TaskState = await this.context.TaskStates.FindAsync(2)
-                });
-                this.context.Tasks.Add(new OpaTask()
+                    Description = "Esta es la tarea 2",
+                    TaskState = this.context.TaskStates.FirstOrDefault(t => t.Id == 2),
+                    Owner = new Owner
+                    {
+                        User = user
+                    }
+                },
+                new OpaTask()
                 {
-                    Category = await this.context.TaskCategories.FindAsync(3),
+                    Name = "Tarea 3",
+                    Category = this.context.TaskCategories.FirstOrDefault(c => c.Id == 3),
                     CompletedDate = DateTime.Now.AddDays(4),
                     CreatedDate = DateTime.Now,
-                    Description = "Tarea 3",
-                    TaskState = await this.context.TaskStates.FindAsync(3)
-                });
-                await this.context.SaveChangesAsync();
-            }
+                    Description = "Esta es la tarea 3",
+                    TaskState = this.context.TaskStates.FirstOrDefault(t => t.Id == 3),
+                    Owner = new Owner
+                    {
+                        User = user
+                    }
+                }
+            };
         }
 
         private async Task CheckRoles()
@@ -125,9 +144,9 @@ namespace Opa.ToDoList.Web.Data
         {
             if (!this.context.TaskStates.Any())
             {
-                this.context.TaskCategories.Add(new TaskCategory { Name = "Cancelada" });
-                this.context.TaskCategories.Add(new TaskCategory { Name = "En progreso" });
-                this.context.TaskCategories.Add(new TaskCategory { Name = "Completada" });
+                this.context.TaskStates.Add(new TaskState { Name = "Cancelada" });
+                this.context.TaskStates.Add(new TaskState { Name = "En progreso" });
+                this.context.TaskStates.Add(new TaskState { Name = "Completada" });
 
                 await this.context.SaveChangesAsync();
             }

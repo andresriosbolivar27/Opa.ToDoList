@@ -7,6 +7,7 @@ namespace Opa.ToDoList.Entities.Business.Entities
     public class OpaTask
     {
         public int Id { get; set; }
+        public string Name { get; set; }
 
         public string Description { get; set; }
 

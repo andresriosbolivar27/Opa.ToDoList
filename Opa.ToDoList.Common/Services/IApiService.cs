@@ -7,5 +7,7 @@ namespace Opa.ToDoList.Common.Services
     {
         Task<Response<OwnerResponse>> GetOwnerByEmailAsync(string urlBase, string servicePrefix, string controller, string email);
         Task<Response<string>> ValidatePassword(string url, string v1, string v2, string email, string password);
+        Task<Response<object>> RegisterUserAsync(string urlBase,string servicePrefix,string controller,UserRequest userRequest);
+
     }
 }

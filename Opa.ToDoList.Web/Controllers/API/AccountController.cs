@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Opa.ToDoList.Common.Models;
 using Opa.ToDoList.Dal;
+using Opa.ToDoList.Entities.Business.Entities;
 using Opa.ToDoList.Web.Helpers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Opa.ToDoList.Web.Controllers.API
@@ -34,7 +37,7 @@ namespace Opa.ToDoList.Web.Controllers.API
 
                 if (user == null)
                 {
-                    return BadRequest("User not found.");
+                    return BadRequest("Usuario no encontrado.");
                 }
 
                 if (await this.userHelper.IsUserInRoleAsync(user, "Owner"))
@@ -66,6 +69,62 @@ namespace Opa.ToDoList.Web.Controllers.API
                     Message = ex.Message
                 });
             }
+        }
+
+        [HttpPost]
+        [Route("RegisterOwner")]
+        public async Task<IActionResult> RegisterOwner([FromBody] UserRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new Response<object>
+                {
+                    IsSuccess = false,
+                    Message = "Bad request"
+                });
+            }
+
+            var user = await this.userHelper.GetUserByEmailAsync(request.Email);
+            if (user != null)
+            {
+                return BadRequest(new Response<object>
+                {
+                    IsSuccess = false,
+                    Message = "Este correo ya se encuentra registrado."
+                });
+            }
+
+            user = new User
+            {
+                Address = request.Address,
+                Document = request.Document,
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                PhoneNumber = request.Phone,
+                UserName = request.Email
+            };
+
+            var result = await this.userHelper.AddUserAsync(user, request.Password);
+            if (result != IdentityResult.Success)
+            {
+                return BadRequest(result.Errors.FirstOrDefault().Description);
+            }
+
+            var nuevoUsuario = await this.userHelper.GetUserByEmailAsync(request.Email);
+            if (request.RoleId == 1)
+            {
+                await this.userHelper.AddUserToRoleAsync(nuevoUsuario, "Owner");
+                this.dataContext.Owners.Add(new Owner { User = nuevoUsuario });
+            }
+
+            await this.dataContext.SaveChangesAsync();
+
+            return Ok(new Response<object>
+            {
+                IsSuccess = true,
+                Message = "Usuario registrado con éxito."
+            });
         }
     }
 }

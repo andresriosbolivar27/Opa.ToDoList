@@ -84,20 +84,34 @@ namespace Opa.ToDoList.Prism.ViewModels
 
             var ownerResponse = await this.apiService.GetOwnerByEmailAsync(url, "api", "/owners/GetOwnerByEmail", Email);
 
-            if (ownerResponse != null)
+            if (ownerResponse != null )
             {
-                var validPassword = await this.apiService.ValidatePassword(url, "api", "/Account/ValidatePassword", ownerResponse.Result.Email,this.Password);
+                if (ownerResponse.IsSuccess)
+                {
+                    var validPassword = await this.apiService.ValidatePassword(url, "api", "/Account/ValidatePassword", ownerResponse.Result.Email, this.Password);
 
-                if (!validPassword.IsSuccess)
+                    if (!validPassword.IsSuccess)
+                    {
+                        IsEnabled = true;
+                        IsRunning = false;
+                        await App.Current.MainPage.DisplayAlert("Error", "Usuario o contraseña incorrectos .", "Aceptar");
+                        return;
+                    }
+                }
+                else
                 {
                     IsEnabled = true;
                     IsRunning = false;
-                    await App.Current.MainPage.DisplayAlert("Error", "Usuario o contraseña incorrectos .", "Aceptar");
+                    await App.Current.MainPage.DisplayAlert("Error", "Problemas de conexion .", "Aceptar");
                     return;
                 }
-            }            
+            }
 
-            await this.navigationService.NavigateAsync(nameof(TaskPage));
+            var param = new NavigationParameters()
+            {
+                { "owner", ownerResponse.Result }
+            };
+            await this.navigationService.NavigateAsync(nameof(TaskPage), param);
             IsEnabled = true;
             IsRunning = false;
         }

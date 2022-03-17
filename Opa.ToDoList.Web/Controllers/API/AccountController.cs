@@ -32,7 +32,6 @@ namespace Opa.ToDoList.Web.Controllers.API
         {
             try
             {
-                //var userRequest = JsonConvert.DeserializeObject<ValidateRequest>(request);
                 var user = await this.userHelper.GetUserByEmailAsync(request.Email);
 
                 if (user == null)

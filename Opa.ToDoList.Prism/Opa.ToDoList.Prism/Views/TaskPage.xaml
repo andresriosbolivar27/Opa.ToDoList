@@ -9,8 +9,13 @@
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid
-            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
-            RowDefinitions="8, 80, 30,*">
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>               
+            </Grid.RowDefinitions>
             <Grid
                 Grid.Row="1"
                 ColumnDefinitions="Auto, *, Auto"
@@ -36,7 +41,7 @@
                     Grid.Column="1"
                     Grid.Row="0"
                     Style="{StaticResource Body1_MulishBold}"
-                    Text="Hello"
+                    Text="Hola"
                     TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}"></Label>
                 <Label
                     Grid.Column="1"
@@ -78,7 +83,8 @@
             </StackLayout>
             <StackLayout
                 Grid.Row="2"
-                Padding="5, 0">
+                Padding="5, 10"
+                Margin="5,5,5,5">
                 <CollectionView
                     x:Name="TaskItems"
                     ItemsSource="{Binding TaskList}">
@@ -133,8 +139,8 @@
                                                 Grid.Row="0"
                                                 Grid.Column="0"
                                                 Grid.RowSpan="2"
-                                                Text="{Binding Archived, Converter={StaticResource DoneIconConverter}}"
-                                                FontSize="25"
+                                                Text="Archivado"
+                                                FontSize="5"
                                                 HorizontalOptions="Start"
                                                 VerticalOptions="Center"
                                                 Margin="10, 0, 0, 0">                                                
@@ -142,7 +148,7 @@
                                             <Label
                                                 Grid.Row="0"
                                                 Grid.Column="1"
-                                                Text="{Binding Task}"
+                                                Text="{Binding Name}"
                                                 FontFamily="Mulish_ExtraBold"
                                                 FontSize="{StaticResource Body2FontSize}"
                                                 Margin="10, 0"
@@ -152,7 +158,7 @@
                                             <Label 
                                                 Grid.Row="1"
                                                 Grid.Column="1"
-                                                Text="{Binding List}"
+                                                Text="{Binding Category.Name}"
                                                 FontFamily="Mulish_Regular"
                                                 FontSize="{StaticResource Body1FontSize}"
                                                 Margin="10, 0"

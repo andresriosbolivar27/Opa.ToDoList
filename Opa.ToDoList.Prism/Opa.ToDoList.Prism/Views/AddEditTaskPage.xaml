@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:fontawesome="clr-namespace:Opa.ToDoList.Prism"
+             x:Class="Opa.ToDoList.Prism.Views.AddEditTaskPage"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <StackLayout
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+            <Grid
+                ColumnDefinitions="Auto, Auto"
+                Margin="20, 10, 0, 10"
+                HorizontalOptions="Start">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+                <Label
+                    Grid.Column="0"
+                    Text="{x:Static fontawesome:FontAwesomeIcons.ArrowLeft}"
+                    FontSize="{StaticResource Headline4FontSize}"
+                    FontFamily="FAS"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"/>
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding Title}"
+                    Style="{StaticResource Headline4_MulishBlack}"
+                    Margin="10, 0, 0, 0"
+                    VerticalOptions="Center">
+                </Label>
+            </Grid>
+            <StackLayout
+                Margin="20, 0, 20, 0"
+                Spacing="5">
+                <Label
+                    Text="Email"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="EmailFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry
+                        Placeholder="Ingresa el nombre de la tarea"
+                        Text="{Binding Name}"
+                    Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="Descripción"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="DescriptionFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry                        
+                        Placeholder="Ingresa una descripcion"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Text="{Binding Description}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="Categoria"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="CategoryFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Picker                	   
+                	    ItemDisplayBinding="{Binding Name}"
+                	    ItemsSource="{Binding TaskCategories}"
+                	    SelectedItem="{Binding TaskCategory}"
+                	    Title="Seleccione una categoria">
+                        <Picker.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Picker.Effects>
+                    </Picker>                    
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="Estado"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="StateFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Picker                	   
+                	    ItemDisplayBinding="{Binding Name}"
+                	    ItemsSource="{Binding TaskStates}"
+                	    SelectedItem="{Binding TaskState}"
+                	    Title="Seleccione un estado">
+                        <Picker.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Picker.Effects>
+                    </Picker>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="Fecha"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="DateFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <DatePicker
+                        FontFamily="Mulish_Regular"
+                        Date="{Binding Date}"
+                        MinimumDate="{Binding MinimumDate}"
+                        Format="dd/MM/yyyy"
+                        Style="{StaticResource Base_DatePicker}">
+                        <DatePicker.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </DatePicker.Effects>
+                    </DatePicker>
+                </Frame>                
+            </StackLayout>
+            <ActivityIndicator
+                IsRunning="{Binding IsRunning}"
+                VerticalOptions="CenterAndExpand"
+                Color="{StaticResource LightButtonColor}">
+            </ActivityIndicator>
+            <Button
+                x:Name="SaveButton"
+                IsEnabled="{Binding IsEnabled}"
+                Command="{Binding SaveCommand}"
+                Margin="20, 0, 20, 10"
+                Text="Registrar"
+                Style="{StaticResource Base_Button}">
+            </Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

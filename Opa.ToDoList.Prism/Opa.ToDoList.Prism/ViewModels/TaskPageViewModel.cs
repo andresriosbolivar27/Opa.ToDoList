@@ -1,6 +1,7 @@
 ﻿using Opa.ToDoList.Common.Models;
 using Opa.ToDoList.Common.Services;
 using Opa.ToDoList.Entities.Business.Entities;
+using Opa.ToDoList.Prism.Views;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Opa.ToDoList.Prism.ViewModels
 {
@@ -24,15 +26,17 @@ namespace Opa.ToDoList.Prism.ViewModels
         private OwnerResponse ownerResponse;
         private string name;
 
+
         public TaskPageViewModel(
             INavigationService navigationService, 
             IApiService apiService) : base(navigationService)
         {
             this.navigationService = navigationService;
             this.apiService = apiService;
-            IsEnabled = true;
+            IsEnabled = true;            
         }
 
+        public Owner Owner { get; set; }
         public string Name
         {
             get => this.name;
@@ -65,9 +69,16 @@ namespace Opa.ToDoList.Prism.ViewModels
 
         public DelegateCommand AddCommand => this.addCommand ?? (this.addCommand = new DelegateCommand(AddTask));
 
-        private void AddTask()
+        private async void AddTask()
         {
-            throw new NotImplementedException();
+            
+            var param = new NavigationParameters()
+            {
+                { "addTask", this.OwnerResponse}
+            };
+            await this.navigationService.NavigateAsync(nameof(AddEditTaskPage), param);
+            IsEnabled = true;
+            IsRunning = false;
         }
 
         public DelegateCommand ProfileCommand => this.profileCommand ?? (this.profileCommand = new DelegateCommand(ProfileUser));

@@ -9,13 +9,9 @@
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid
-            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="10"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>               
-            </Grid.RowDefinitions>
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+            RowDefinitions="8, 80, 480,80">
+            
             <Grid
                 Grid.Row="1"
                 ColumnDefinitions="Auto, *, Auto"
@@ -69,7 +65,7 @@
                 Grid.Row="2"
                 Orientation="Horizontal"
                 HorizontalOptions="FillAndExpand"
-                Margin="15, 5, 15, 0">
+                Margin="20, 0, 10, 190">
                 <Label
                     Style="{StaticResource Subtitle1_MulishBlack}"
                     Text="Tasks"
@@ -79,12 +75,12 @@
                     TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
                     Style="{StaticResource Body1_MulishRegular}"
                     HorizontalOptions="EndAndExpand"
-                    VerticalOptions="End"></Label>
+                    VerticalOptions="Start"></Label>
             </StackLayout>
             <StackLayout
                 Grid.Row="2"
                 Padding="5, 10"
-                Margin="5,5,5,5">
+                Margin="5,15,5,15">
                 <CollectionView
                     x:Name="TaskItems"
                     ItemsSource="{Binding TaskList}">
@@ -139,7 +135,7 @@
                                                 Grid.Row="0"
                                                 Grid.Column="0"
                                                 Grid.RowSpan="2"
-                                                Text="Archivado"
+                                                Text="{Binding Archived}"
                                                 FontSize="5"
                                                 HorizontalOptions="Start"
                                                 VerticalOptions="Center"
@@ -191,12 +187,8 @@
                     FontFamily="FAS"
                     TextColor="{AppThemeBinding Light={StaticResource LightButtonTextColor}, Dark={StaticResource DarkButtonTextColor}}"
                     HorizontalOptions="Center"
-                    VerticalOptions="Center"></Label>
-                
-            </Frame>
-            <CollectionView>
-
-            </CollectionView>
+                    VerticalOptions="Center"></Label>                
+            </Frame>            
         </Grid>   
     </ContentPage.Content>  
 </ContentPage>

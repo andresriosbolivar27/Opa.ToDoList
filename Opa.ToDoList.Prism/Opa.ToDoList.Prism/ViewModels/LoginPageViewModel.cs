@@ -26,6 +26,8 @@ namespace Opa.ToDoList.Prism.ViewModels
             IsEnabled = true;
             IsRemember = true;
             BackCommand = new Command(BackCommandHandler);
+            Email = "nacional12344@gmail.com";
+            Password= "123456";
         }
 
         public DelegateCommand LoginCommand => this.loginCommand ?? (this.loginCommand = new DelegateCommand(Login));

@@ -89,6 +89,25 @@
                             <StackLayout>
                                 <SwipeView
                                     BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+                                    <SwipeView.LeftItems>
+                                        <SwipeItems>
+                                            <SwipeItemView
+                                                Command="{Binding BindingContext.ArchivedTaskCommand, Source={x:Reference TaskItems}}"
+                                                CommandParameter="{Binding}">
+                                                <Frame
+                                                    BackgroundColor="Transparent"
+                                                    Padding="15, 0">
+                                                    <Label
+                                                        Text="{x:Static fontawesome:FontAwesomeIcons.Archive}"
+                                                        TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                                        FontSize="{StaticResource Headline4FontSize}"
+                                                        FontFamily="FAS"
+                                                        VerticalTextAlignment="Center">
+                                                    </Label>
+                                                </Frame>
+                                            </SwipeItemView>                                            
+                                        </SwipeItems>
+                                    </SwipeView.LeftItems>
                                     <SwipeView.RightItems>
                                         <SwipeItems>
                                             <SwipeItemView

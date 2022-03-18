@@ -149,7 +149,7 @@ namespace Opa.ToDoList.Prism.ViewModels
 
             if (parameters.ContainsKey("editTask"))
             {
-                Task = parameters.GetValue<TaskRequest>("editTask");
+                this.Task = parameters.GetValue<TaskRequest>("editTask");
                 IsEdit = true;
                 Title = "Editar Tarea";
             }
@@ -285,7 +285,7 @@ namespace Opa.ToDoList.Prism.ViewModels
                 { "owner", ownerResponse }
             };
 
-            await this.navigationService.GoBackAsync(param);
+            await this.navigationService. GoBackAsync(param);
         }
     }
 }

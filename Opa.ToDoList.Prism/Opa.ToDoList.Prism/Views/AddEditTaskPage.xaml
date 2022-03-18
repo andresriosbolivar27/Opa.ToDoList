@@ -35,10 +35,10 @@
                 Margin="20, 0, 20, 0"
                 Spacing="5">
                 <Label
-                    Text="Email"
+                    Text="Nombre Tarea"
                     Style="{StaticResource Body1_MulishSemiBold}"></Label>
                 <Frame
-                    x:Name="EmailFrame"
+                    x:Name="NameFrame"
                     Style="{StaticResource Base_FrameEntry}">
                     <Entry
                         Placeholder="Ingresa el nombre de la tarea"

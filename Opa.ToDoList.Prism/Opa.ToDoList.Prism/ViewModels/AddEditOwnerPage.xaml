@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:fontawesome="clr-namespace:Opa.ToDoList.Prism"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="Opa.ToDoList.Prism.ViewModels.AddEditOwnerPage">
+    <ContentPage.Content>
+        <StackLayout
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+            <Grid
+                ColumnDefinitions="Auto, Auto"
+                Margin="20, 10, 0, 10"
+                HorizontalOptions="Start">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+                <Label
+                    Grid.Column="0"
+                    Text="{x:Static fontawesome:FontAwesomeIcons.ArrowLeft}"
+                    FontSize="{StaticResource Headline4FontSize}"
+                    FontFamily="FAS"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"/>
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding Title}"
+                    Style="{StaticResource Headline4_MulishBlack}"
+                    Margin="10, 0, 0, 0"
+                    VerticalOptions="Center">
+                </Label>
+            </Grid>
+            <StackLayout
+                Margin="20, 0, 20, 0"
+                Spacing="5">
+                <Label
+                    Text="Numero Documento"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="NameFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry
+                        Placeholder="Ingrese el numero de su identificación"
+                        Text="{Binding Document}"
+                    Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="NameOwner"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="NameOwnerFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry                        
+                        Placeholder="Ingresa su nombre"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Text="{Binding FirstNane}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="LastNameOwner"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="LastNameOwnerFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry                        
+                        Placeholder="Ingresa su nombre"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Text="{Binding FirstNane}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="LastNameOwner"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="LastNameFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry                        
+                        Placeholder="Ingresa su apellido"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Text="{Binding LastNane}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="AddressOwner"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="AddressOwnerFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry                        
+                        Placeholder="Ingresa su dirección"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Text="{Binding Address}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="EmailOwner"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="EmailOwnerFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry
+                        Placeholder="Ingresa su correo"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Text="{Binding Email}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="PhoneOwner"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="PhoneOwnerFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry                        
+                        Placeholder="Ingresa su telefono"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Text="{Binding Phone}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="PasswordOwner"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="PasswordOwnerFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry
+                        IsPassword="True"
+                        Placeholder="Ingresa su contraseña"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Text="{Binding Password}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout
+                Margin="20, 0"
+                Spacing="5">
+                <Label
+                    Text="PasswordConfirmOwner"
+                    Style="{StaticResource Body1_MulishSemiBold}"></Label>
+                <Frame
+                    x:Name="PasswordConfirmOwnerFrame"
+                    Style="{StaticResource Base_FrameEntry}">
+                    <Entry
+                        IsPassword="True"
+                        Placeholder="Ingresa su contraseña"
+                        ReturnCommand="{Binding LoginCommand}"
+                        Text="{Binding PasswordConfirm}"
+                        Style="{StaticResource Base_Entry}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect></xct:RemoveBorderEffect>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <ActivityIndicator
+                IsRunning="{Binding IsRunning}"
+                VerticalOptions="CenterAndExpand"
+                Color="{StaticResource LightButtonColor}">
+            </ActivityIndicator>
+            <Button
+                x:Name="SaveButton"
+                IsEnabled="{Binding IsEnabled}"
+                Command="{Binding SaveCommand}"
+                Margin="20, 0, 20, 10"
+                Text="Registrar"
+                Style="{StaticResource Base_Button}">
+            </Button>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

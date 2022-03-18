@@ -104,9 +104,15 @@ namespace Opa.ToDoList.Prism.ViewModels
 
         public DelegateCommand EditTaskCommand => this.editTaskCommand ?? (this.editTaskCommand = new DelegateCommand(EditTask));
 
-        private void EditTask()
+        private async void EditTask()
         {
-            throw new NotImplementedException();
+            var param = new NavigationParameters()
+            {
+                { "editTask", this.OwnerResponse}
+            };
+            await this.navigationService.NavigateAsync(nameof(AddEditTaskPage), param);
+            IsEnabled = true;
+            IsRunning = false;
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)

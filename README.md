@@ -13,6 +13,9 @@ Opa ToDo App
 ## Despliegue host
 - [Smarterasp](https://www.smarterasp.net/)
 
+## Host
+- [Host](http://blackcronox-001-site1.itempurl.com/)
+
 ## App
 - [APK](https://drive.google.com/file/d/149b0L4IzbyV4s7fHR-zjAdfypxCSKKsv/view?usp=sharing)
 

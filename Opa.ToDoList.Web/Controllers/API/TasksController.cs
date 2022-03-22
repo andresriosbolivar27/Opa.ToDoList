@@ -4,7 +4,6 @@ using Opa.ToDoList.Dal;
 using Opa.ToDoList.Entities.Business.Entities;
 using Opa.ToDoList.Web.Helpers;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Opa.ToDoList.Web.Controllers.API
@@ -57,12 +56,12 @@ namespace Opa.ToDoList.Web.Controllers.API
 
             var task = new OpaTask
             {
-               Category = taskCategory,
-               CreatedDate = DateTime.Now,
-               Description = request.Description,
-               Name = request.Name,
-               Owner = owner,
-               TaskState = taskState
+                Category = taskCategory,
+                CreatedDate = DateTime.Now,
+                Description = request.Description,
+                Name = request.Name,
+                Owner = owner,
+                TaskState = taskState
             };
 
             this.dataContext.Tasks.Add(task);
@@ -73,6 +72,72 @@ namespace Opa.ToDoList.Web.Controllers.API
             {
                 IsSuccess = true,
                 Message = "Tarea registrada con éxito."
+            });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTask([FromRoute] int id, [FromBody] TaskRequest  request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new Response<object>
+                {
+                    IsSuccess = false,
+                    Message = "Bad request"
+                });
+            }
+
+            if (id != request.Id)
+            {
+                return BadRequest(new Response<object>
+                {
+                    IsSuccess = false,
+                    Message = "Bad request"
+                });
+            }
+
+            var owner = await this.dataContext.Owners.FindAsync(request.OwnerId);
+            if (owner == null)
+            {
+                return BadRequest("Usuario no valido.");
+            }
+
+            var oldTask = await this.dataContext.Tasks.FindAsync(request.Id);
+            if (oldTask == null)
+            {
+                return BadRequest("Tarea no existe.");
+            }
+
+            var taskCategory = await this.dataContext.TaskCategories.FindAsync(request.CategoryId);
+            if (taskCategory == null)
+            {
+                return BadRequest("Categoria no valida.");
+            }
+
+            var taskState = await this.dataContext.TaskStates.FindAsync(request.TaskStateId);
+            if (taskState == null)
+            {
+                return BadRequest("Categoria no valida.");
+            }
+
+            oldTask.Category = taskCategory;
+            oldTask.CreatedDate = request.CreatedDate;
+            oldTask.Description = request.Description;
+            oldTask.Name = request.Name;
+            oldTask.Owner = owner;
+            oldTask.TaskState = taskState;
+            oldTask.CompletedDate = request.CompletedDate;
+            oldTask.Archived = request.Archived;
+
+
+            this.dataContext.Tasks.Update(oldTask);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return Ok(new Response<object>
+            {
+                IsSuccess = true,
+                Message = "Tarea actualizada con éxito."
             });
         }
     }

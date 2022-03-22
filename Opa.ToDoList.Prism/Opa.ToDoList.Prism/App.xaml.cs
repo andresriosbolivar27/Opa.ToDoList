@@ -35,6 +35,7 @@ namespace Opa.ToDoList.Prism
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<TaskPage, TaskPageViewModel>();
             containerRegistry.RegisterForNavigation<AddEditTaskPage, AddEditTaskPageViewModel>();
+            containerRegistry.RegisterForNavigation<AddEditOwnerPage, AddEditOwnerPageViewModel>();
         }
 
         private void SetAppTheme()

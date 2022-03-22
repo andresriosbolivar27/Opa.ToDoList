@@ -15,7 +15,7 @@ namespace Opa.ToDoList.Web.Data
         private readonly IUserHelper userHelper;
 
         public SeedDb(
-            OpaToDoListDataContext context, 
+            OpaToDoListDataContext context,
             IUserHelper userHelper)
         {
             this.context = context;
@@ -30,7 +30,7 @@ namespace Opa.ToDoList.Web.Data
             await CheckTaskCategory();
             await CheckTaskStates();
             await CheckOwnersAsync(owner);
-            
+
         }
 
         private async Task CheckOwnersAsync(User user)
@@ -40,8 +40,8 @@ namespace Opa.ToDoList.Web.Data
                 this.context.Owners.Add(new Owner
                 {
                     User = user,
-                    Tasks = CheckOwnerTasks(user), 
-                }) ;
+                    Tasks = CheckOwnerTasks(user),
+                });
                 await this.context.SaveChangesAsync();
             }
         }
@@ -92,7 +92,8 @@ namespace Opa.ToDoList.Web.Data
                     Owner = new Owner
                     {
                         User = user
-                    }
+                    },
+                    Archived = false
                 },
                 new OpaTask()
                 {
@@ -105,7 +106,8 @@ namespace Opa.ToDoList.Web.Data
                     Owner = new Owner
                     {
                         User = user
-                    }
+                    },
+                    Archived = true
                 },
                 new OpaTask()
                 {
@@ -118,7 +120,8 @@ namespace Opa.ToDoList.Web.Data
                     Owner = new Owner
                     {
                         User = user
-                    }
+                    },
+                    Archived = false
                 }
             };
         }

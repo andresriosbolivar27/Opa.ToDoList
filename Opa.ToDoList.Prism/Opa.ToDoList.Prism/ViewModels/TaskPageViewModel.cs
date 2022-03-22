@@ -3,10 +3,8 @@ using Opa.ToDoList.Common.Services;
 using Opa.ToDoList.Entities.Business.Entities;
 using Opa.ToDoList.Prism.Views;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,25 +20,45 @@ namespace Opa.ToDoList.Prism.ViewModels
         private DelegateCommand profileCommand;
         private DelegateCommand moreCommand;
         private DelegateCommand deleteTaskCommand;
-        private DelegateCommand editTaskCommand;
+        private DelegateCommand refreshCommand;
+        private DelegateCommand<OpaTask> editTaskCommand;
         private OwnerResponse ownerResponse;
         private string name;
-
+        private bool isRunning;
+        private bool isEnabled;
+        private bool isRefreshing;
+        private static TaskPageViewModel instance;
 
         public TaskPageViewModel(
-            INavigationService navigationService, 
+            INavigationService navigationService,
             IApiService apiService) : base(navigationService)
         {
             this.navigationService = navigationService;
             this.apiService = apiService;
-            IsEnabled = true;            
+            IsEnabled = true;
+            if (isRefreshing)
+            {
+                RefreshTasks();
+                this.isRefreshing = false;
+            }
         }
+        public static TaskPageViewModel GetInstance()
+        {
+            return instance;
+        }
+
 
         public Owner Owner { get; set; }
         public string Name
         {
             get => this.name;
             set => SetProperty(ref this.name, value);
+        }
+
+        public bool IsRefreshing
+        {
+            get => this.isRefreshing;
+            set => SetProperty(ref this.isRefreshing, value);
         }
 
         public bool IsRunning
@@ -67,11 +85,53 @@ namespace Opa.ToDoList.Prism.ViewModels
             set => SetProperty(ref ownerResponse, value);
         }
 
+        public DelegateCommand RefreshCommand => this.refreshCommand ?? (this.refreshCommand = new DelegateCommand(RefreshTasks));
+
+        private async void RefreshTasks()
+        {
+            this.isRefreshing = true;
+            IsEnabled = false;
+            IsRunning = true;
+            this.TaskList.Clear();
+            await GetDataOwner();
+            this.IsRefreshing = false;
+        }
+
+        private async Task GetDataOwner()
+        {
+            var url = App.Current.Resources["UrlAPI"].ToString();
+            var connection = this.HasNoInternetConnection;
+            if (connection)
+            {
+                IsEnabled = true;
+                IsRunning = false;
+                await App.Current.MainPage.DisplayAlert("Error", "Comprobar la conexión a Internet .", "Aceptar");
+                return;
+            }
+            
+            var ownerResponse = await this.apiService.GetOwnerByEmailAsync(url, "api", "/owners/GetOwnerByEmail", this.OwnerResponse.Email);
+
+            if (ownerResponse != null)
+            {
+                if (ownerResponse.IsSuccess)
+                {
+                    this.TaskList = new ObservableCollection<OpaTask>(OwnerResponse.Tasks);
+                }
+                else
+                {
+                    IsEnabled = true;
+                    IsRunning = false;
+                    await App.Current.MainPage.DisplayAlert("Error", "Problemas de conexion .", "Aceptar");
+                    return;
+                }
+            }
+        }
+
         public DelegateCommand AddCommand => this.addCommand ?? (this.addCommand = new DelegateCommand(AddTask));
 
         private async void AddTask()
         {
-            
+
             var param = new NavigationParameters()
             {
                 { "addTask", this.OwnerResponse}
@@ -102,13 +162,24 @@ namespace Opa.ToDoList.Prism.ViewModels
             throw new NotImplementedException();
         }
 
-        public DelegateCommand EditTaskCommand => this.editTaskCommand ?? (this.editTaskCommand = new DelegateCommand(EditTask));
+        public DelegateCommand<OpaTask> EditTaskCommand => this.editTaskCommand ?? (this.editTaskCommand = new DelegateCommand<OpaTask>(EditTask));
 
-        private async void EditTask()
+        private async void EditTask(OpaTask task)
         {
             var param = new NavigationParameters()
             {
-                { "editTask", this.OwnerResponse}
+                { "editTask", new TaskRequest
+                    {
+                        CategoryId = task.Category.Id,
+                        CompletedDate = task.CompletedDate,
+                        Id = task.Id,
+                        CreatedDate = task.CreatedDate,
+                        Description = task.Description,
+                        Name = task.Name,
+                        OwnerId = this.OwnerResponse.Id,
+                        TaskStateId = task.TaskState.Id
+                    }
+                },{"owner", this.OwnerResponse }
             };
             await this.navigationService.NavigateAsync(nameof(AddEditTaskPage), param);
             IsEnabled = true;
@@ -121,9 +192,9 @@ namespace Opa.ToDoList.Prism.ViewModels
 
             if (parameters.ContainsKey("owner"))
             {
-                this.OwnerResponse = parameters.GetValue<OwnerResponse>("owner");
+                this.OwnerResponse = parameters.GetValue<OwnerResponse>("owner");                
                 this.Name = OwnerResponse.FirstName;
-                this.TaskList = new ObservableCollection<OpaTask>(OwnerResponse.Tasks);
+                this.TaskList = new ObservableCollection<OpaTask>(this.OwnerResponse.Tasks);
             }
         }
     }

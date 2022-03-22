@@ -13,9 +13,12 @@ namespace Opa.ToDoList.Prism.ViewModels
         private readonly INavigationService navigationService;
         private readonly IApiService apiService;
         private string password;
-       
+        private bool isRunning;
+        private bool isEnabled;
+
         private DelegateCommand loginCommand;
-        
+        private DelegateCommand registerCommand;
+
 
         public LoginPageViewModel(
             INavigationService navigationService,
@@ -31,6 +34,7 @@ namespace Opa.ToDoList.Prism.ViewModels
         }
 
         public DelegateCommand LoginCommand => this.loginCommand ?? (this.loginCommand = new DelegateCommand(Login));
+        public DelegateCommand RegisterCommand => this.registerCommand ?? (this.registerCommand = new DelegateCommand(Register));
         public ICommand BackCommand { get; set; }
         public bool IsRemember { get; set; }
 
@@ -116,6 +120,11 @@ namespace Opa.ToDoList.Prism.ViewModels
             await this.navigationService.NavigateAsync(nameof(TaskPage), param);
             IsEnabled = true;
             IsRunning = false;
+        }
+
+        public async void Register()
+        {
+            await this.navigationService.NavigateAsync("AddEditOwnerPage");
         }
     }
 }

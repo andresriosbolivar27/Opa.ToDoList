@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using Opa.ToDoList.Common.Models;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using System;
@@ -11,18 +12,36 @@ namespace Opa.ToDoList.Prism.ViewModels
     public class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible
     {
         protected INavigationService NavigationService { get; private set; }
-
-        public bool isRunning;
-        public bool isEnabled;
+        
+        private bool isEdit;
+        private bool isRunning;
+        private bool isEnabled;
 
 
         public bool HasNoInternetConnection { get; set; }
 
         private string _title;
+        private TaskRequest task;
         public string Title
         {
             get { return _title; }
             set { SetProperty(ref _title, value); }
+        }
+        public bool IsEdit
+        {
+            get { return isEdit; }
+            set { SetProperty(ref isEdit, value); }
+        }
+
+        public virtual bool IsRunning
+        {
+            get => isRunning;
+            set => SetProperty(ref isRunning, value);
+        }
+        public virtual bool IsEnabled
+        {
+            get => isEnabled;
+            set => SetProperty(ref isEnabled, value);
         }
 
         public ViewModelBase(INavigationService navigationService)
@@ -61,7 +80,7 @@ namespace Opa.ToDoList.Prism.ViewModels
             this.isEnabled = true;
             this.isRunning = false;
             await NavigationService.GoBackAsync();
-            
+
         }
     }
 }

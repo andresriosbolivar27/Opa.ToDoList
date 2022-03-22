@@ -84,7 +84,13 @@
                             Text="Regístrate"
                             Style="{StaticResource Base_Link}"></Span>
                     </FormattedString>
-                </Label.FormattedText>                
+                </Label.FormattedText>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer 
+                        Command="{Binding RegisterCommand}" 
+                        NumberOfTapsRequired="1">                        
+                    </TapGestureRecognizer>
+                </Label.GestureRecognizers>
              </Label>
             <Label                
                 Text="Se te olvidó tu contraseña?"

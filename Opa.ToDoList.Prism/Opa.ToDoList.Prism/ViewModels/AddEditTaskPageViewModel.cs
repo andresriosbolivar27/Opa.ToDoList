@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Opa.ToDoList.Common.Models;
 using Opa.ToDoList.Common.Services;
+using Opa.ToDoList.Entities.Business.Entities;
+using Opa.ToDoList.Prism.Views;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -22,7 +24,7 @@ namespace Opa.ToDoList.Prism.ViewModels
         private bool isEnabled;
         private bool isEdit;
         private DateTime date;
-        private DelegateCommand saveCommand;
+        private DelegateCommand<Owner> saveCommand;
         private TaskRequest task;
         private OwnerResponse ownerResponse;
         private ObservableCollection<TaskStateResponse> taskStates;
@@ -30,7 +32,8 @@ namespace Opa.ToDoList.Prism.ViewModels
         private TaskStateResponse taskState;
         private TaskCategoryResponse taskCategory;
 
-        public AddEditTaskPageViewModel(INavigationService navigationService,
+        public AddEditTaskPageViewModel(
+            INavigationService navigationService,
             IApiService apiService) : base(navigationService)
         {
             this.navigationService = navigationService;
@@ -39,7 +42,7 @@ namespace Opa.ToDoList.Prism.ViewModels
             this.MinimumDate = DateTime.Now;
         }
 
-        public DelegateCommand SaveCommand => this.saveCommand ?? (this.saveCommand = new DelegateCommand(SaveAsync));
+        public DelegateCommand<Owner> SaveCommand => this.saveCommand ?? (this.saveCommand = new DelegateCommand<Owner>(SaveAsync));
         public string Name
         {
             get => this.name;
@@ -64,12 +67,6 @@ namespace Opa.ToDoList.Prism.ViewModels
         {
             get => this.isRunning;
             set => SetProperty(ref this.isRunning, value);
-        }
-
-        public bool IsEdit
-        {
-            get => this.isEdit;
-            set => SetProperty(ref this.isEdit, value);
         }
 
         public bool IsEnabled
@@ -149,18 +146,33 @@ namespace Opa.ToDoList.Prism.ViewModels
 
             if (parameters.ContainsKey("editTask"))
             {
-                this.Task = parameters.GetValue<TaskRequest>("editTask");
                 IsEdit = true;
-                Title = "Editar Tarea";
+                this.Title = "Editar Tarea";
+                LoadData();
+                this.Task = parameters.GetValue<TaskRequest>("editTask");
+                this.OwnerResponse = parameters.GetValue<OwnerResponse>("owner");
+                this.Name = this.Task.Name;
+                this.Description = this.Task.Description;
+                this.TaskCategories = TaskCategories;
+                this.TaskStates = TaskStates;
+                this.TaskCategory = TaskCategories.SingleOrDefault(x => x.Id == this.Task.CategoryId);
+                this.TaskState = TaskStates.SingleOrDefault(x => x.Id == this.Task.TaskStateId);
+                this.TaskCategory.Name = TaskCategories.FirstOrDefault(x => x.Id == this.Task.CategoryId).Name;
+                this.TaskState.Name = TaskStates.FirstOrDefault(x => x.Id == this.Task.TaskStateId).Name;
+
             }
             else
             {
                 this.Task = new TaskRequest();
-                this.IsEdit = false;
+                IsEdit = false;
                 this.Title = "Adicionar Tarea";
                 this.OwnerResponse = parameters.GetValue<OwnerResponse>("addTask");
+                LoadData();
             }
+        }
 
+        private void LoadData()
+        {
             LoadTaskCategoriesAsync();
             LoadTaskStatesAsync();
         }
@@ -219,7 +231,7 @@ namespace Opa.ToDoList.Prism.ViewModels
             }
         }
 
-        private async void SaveAsync()
+        private async void SaveAsync(Owner ownerRequest)
         {
             var isValid = await ValidateDataAsync();
             if (!isValid)
@@ -230,7 +242,7 @@ namespace Opa.ToDoList.Prism.ViewModels
             IsRunning = true;
             IsEnabled = false;
 
-            var url = App.Current.Resources["UrlAPI"].ToString();            
+            var url = App.Current.Resources["UrlAPI"].ToString();
             var owner = this.OwnerResponse;
 
             var task = new TaskRequest
@@ -240,7 +252,9 @@ namespace Opa.ToDoList.Prism.ViewModels
                 CategoryId = this.TaskCategory.Id,
                 TaskStateId = this.TaskState.Id,
                 OwnerId = owner.Id,
-                CreatedDate = this.Date
+                CreatedDate = this.Date,
+                CompletedDate = this.IsEdit == true && this.TaskState.Id == 1 ? DateTime.Now : DateTime.MinValue,
+                Id = this.Task.Id
             };
 
             Response<object> response;
@@ -249,9 +263,9 @@ namespace Opa.ToDoList.Prism.ViewModels
                 response = await this.apiService.PutAsync(
                     url,
                     "/api",
-                    "/EditTask",
+                    "/tasks",
                     this.Task.Id,
-                    this.Task);
+                    task);
             }
             else
             {
@@ -275,17 +289,17 @@ namespace Opa.ToDoList.Prism.ViewModels
 
             await App.Current.MainPage.DisplayAlert(
                 "Tarea",
-                "Tarea registrada con exito",                
+                this.IsEdit == true ? "Tarea actualizada con exito" : "Tarea registrada con exito",
                 "Aceptar");
 
             var ownerResponse = await this.apiService.GetOwnerByEmailAsync(url, "api", "/owners/GetOwnerByEmail", this.ownerResponse.Email);
+            this.OwnerResponse = ownerResponse.Result;
             var param = new NavigationParameters()
 
             {
-                { "owner", ownerResponse }
+                { "owner", this.OwnerResponse}
             };
-
-            await this.navigationService. GoBackAsync(param);
+            await this.navigationService.NavigateAsync(nameof(TaskPage), param);
         }
     }
 }

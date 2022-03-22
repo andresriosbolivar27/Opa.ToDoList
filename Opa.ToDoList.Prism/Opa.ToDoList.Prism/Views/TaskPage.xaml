@@ -81,111 +81,116 @@
                 Grid.Row="2"
                 Padding="5, 10"
                 Margin="5,15,5,15">
-                <CollectionView
-                    x:Name="TaskItems"
-                    ItemsSource="{Binding TaskList}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout>
-                                <SwipeView
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
-                                    <SwipeView.LeftItems>
-                                        <SwipeItems>
-                                            <SwipeItemView
-                                                Command="{Binding BindingContext.ArchivedTaskCommand, Source={x:Reference TaskItems}}"
-                                                CommandParameter="{Binding}">
-                                                <Frame
-                                                    BackgroundColor="Transparent"
-                                                    Padding="15, 0">
-                                                    <Label
-                                                        Text="{x:Static fontawesome:FontAwesomeIcons.Archive}"
-                                                        TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
-                                                        FontSize="{StaticResource Headline4FontSize}"
-                                                        FontFamily="FAS"
-                                                        VerticalTextAlignment="Center">
-                                                    </Label>
-                                                </Frame>
-                                            </SwipeItemView>                                            
-                                        </SwipeItems>
-                                    </SwipeView.LeftItems>
-                                    <SwipeView.RightItems>
-                                        <SwipeItems>
-                                            <SwipeItemView
-                                                Command="{Binding BindingContext.DeleteTaskCommand, Source={x:Reference TaskItems}}"
-                                                CommandParameter="{Binding}">
-                                                <Frame
-                                                    BackgroundColor="Transparent"
-                                                    Padding="15, 0">
-                                                    <Label
-                                                        Text="{x:Static fontawesome:FontAwesomeIcons.TrashAlt}"
-                                                        TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
-                                                        FontSize="{StaticResource Headline4FontSize}"
-                                                        FontFamily="FAS"
-                                                        VerticalTextAlignment="Center">
-                                                    </Label>
-                                                </Frame>
-                                            </SwipeItemView>
-                                            <SwipeItemView 
-                                                Command="{Binding BindingContext.EditTaskCommand, Source={x:Reference TaskItems}}"
-                                                CommandParameter="{Binding}">
-                                                <Frame
-                                                    BackgroundColor="Transparent"
-                                                    Padding="25, 0, 15, 0">
-                                                    <Label
-                                                        Text="{x:Static fontawesome:FontAwesomeIcons.PencilAlt}"
-                                                        TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
-                                                        FontSize="{StaticResource Headline4FontSize}"
-                                                        FontFamily="FAS"
-                                                        VerticalTextAlignment="Center">
-                                                    </Label>
-                                                </Frame>
-                                            </SwipeItemView>
-                                        </SwipeItems>                                        
-                                    </SwipeView.RightItems>
-                                    <Frame
-                                        Padding="10"
-                                        Margin="10, 5"
-                                        CornerRadius="20">
-                                        <Grid
-                                            ColumnDefinitions="Auto, Auto"
-                                            RowDefinitions="Auto, Auto"
-                                            RowSpacing="0">
-                                            <Label
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Grid.RowSpan="2"
-                                                Text="{Binding Archived}"
-                                                FontSize="5"
-                                                HorizontalOptions="Start"
-                                                VerticalOptions="Center"
-                                                Margin="10, 0, 0, 0">                                                
-                                            </Label>
-                                            <Label
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Text="{Binding Name}"
-                                                FontFamily="Mulish_ExtraBold"
-                                                FontSize="{StaticResource Body2FontSize}"
-                                                Margin="10, 0"
-                                                VerticalOptions="Center">
-                                                
-                                            </Label>
-                                            <Label 
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Text="{Binding Category.Name}"
-                                                FontFamily="Mulish_Regular"
-                                                FontSize="{StaticResource Body1FontSize}"
-                                                Margin="10, 0"
-                                                VerticalOptions="CenterAndExpand">                                                
-                                            </Label>
-                                        </Grid>
-                                    </Frame>
-                                </SwipeView>
-                            </StackLayout>                            
-                        </DataTemplate>                        
-                    </CollectionView.ItemTemplate>                    
-                </CollectionView>                
+                <RefreshView
+                    RefreshColor="{StaticResource LightButtonColor}"
+                    IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
+                    Command="{Binding RefreshCommand}">
+                    <CollectionView
+                        x:Name="TaskItems"
+                        ItemsSource="{Binding TaskList}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+                                    <SwipeView
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+                                        <SwipeView.LeftItems>
+                                            <SwipeItems>
+                                                <SwipeItemView
+                                                    Command="{Binding BindingContext.ArchivedTaskCommand, Source={x:Reference TaskItems}}"
+                                                    CommandParameter="{Binding}">
+                                                    <Frame
+                                                        BackgroundColor="Transparent"
+                                                        Padding="15, 0">
+                                                        <Label
+                                                            Text="{x:Static fontawesome:FontAwesomeIcons.Archive}"
+                                                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                                            FontSize="{StaticResource Headline4FontSize}"
+                                                            FontFamily="FAS"
+                                                            VerticalTextAlignment="Center">
+                                                        </Label>
+                                                    </Frame>
+                                                </SwipeItemView>
+                                            </SwipeItems>
+                                        </SwipeView.LeftItems>
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItemView
+                                                    Command="{Binding BindingContext.DeleteTaskCommand, Source={x:Reference TaskItems}}"
+                                                    CommandParameter="{Binding}">
+                                                    <Frame
+                                                        BackgroundColor="Transparent"
+                                                        Padding="15, 0">
+                                                        <Label
+                                                            Text="{x:Static fontawesome:FontAwesomeIcons.TrashAlt}"
+                                                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                                            FontSize="{StaticResource Headline4FontSize}"
+                                                            FontFamily="FAS"
+                                                            VerticalTextAlignment="Center">
+                                                        </Label>
+                                                    </Frame>
+                                                </SwipeItemView>
+                                                <SwipeItemView 
+                                                    Command="{Binding BindingContext.EditTaskCommand, Source={x:Reference TaskItems}}"
+                                                    CommandParameter="{Binding}">
+                                                    <Frame
+                                                        BackgroundColor="Transparent"
+                                                        Padding="25, 0, 15, 0">
+                                                        <Label
+                                                            Text="{x:Static fontawesome:FontAwesomeIcons.PencilAlt}"
+                                                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                                            FontSize="{StaticResource Headline4FontSize}"
+                                                            FontFamily="FAS"
+                                                            VerticalTextAlignment="Center">
+                                                        </Label>
+                                                    </Frame>
+                                                </SwipeItemView>
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
+                                        <Frame
+                                            Padding="10"
+                                            Margin="10, 5"
+                                            CornerRadius="20">
+                                            <Grid
+                                                ColumnDefinitions="Auto, Auto"
+                                                RowDefinitions="Auto, Auto"
+                                                RowSpacing="0">
+                                                <Label
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2"
+                                                    Text=""
+                                                    FontSize="5"
+                                                    HorizontalOptions="Start"
+                                                    VerticalOptions="Center"
+                                                    Margin="10, 0, 0, 0">
+                                                </Label>
+                                                <Label
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    Text="{Binding Name}"
+                                                    FontFamily="Mulish_ExtraBold"
+                                                    FontSize="{StaticResource Body2FontSize}"
+                                                    Margin="10, 0"
+                                                    VerticalOptions="Center">
+
+                                                </Label>
+                                                <Label 
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Text="{Binding Category.Name}"
+                                                    FontFamily="Mulish_Regular"
+                                                    FontSize="{StaticResource Body1FontSize}"
+                                                    Margin="10, 0"
+                                                    VerticalOptions="CenterAndExpand">
+                                                </Label>
+                                            </Grid>
+                                        </Frame>
+                                    </SwipeView>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
             </StackLayout>
             <Frame
                 Grid.Row="3" 

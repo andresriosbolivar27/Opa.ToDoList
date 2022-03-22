@@ -23,13 +23,13 @@
                 HorizontalTextAlignment="Center"
                 Margin="30, 20, 30, 10"
                 Style="{StaticResource Headline4_MulishBlack}"
-                Text="Manage your daily tasks in one place"></Label>
+                Text="Gestiona tus tareas diarias en un solo lugar"></Label>
             <Label
                 Grid.Row="2"
                 HorizontalTextAlignment="Center"
                 Margin="0, 0, 0, 30"
                 Style="{StaticResource Body1_MulishRegular}"
-                Text="Organize your daily tasks with ToDo app."
+                Text="Organiza tus tareas diarias con To Do app."
                 TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}">
              </Label>
             <Button

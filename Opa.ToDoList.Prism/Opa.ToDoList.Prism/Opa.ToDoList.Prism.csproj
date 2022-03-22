@@ -61,7 +61,7 @@
     <EmbeddedResource Update="Styles\Theme.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\AddEditOwnerPage.xaml">
+    <EmbeddedResource Update="Views\AddEditOwnerPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\AddEditTaskPage.xaml">

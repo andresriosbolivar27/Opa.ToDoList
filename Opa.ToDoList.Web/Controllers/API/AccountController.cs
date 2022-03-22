@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Opa.ToDoList.Common.Models;
 using Opa.ToDoList.Dal;
 using Opa.ToDoList.Entities.Business.Entities;
@@ -44,18 +43,18 @@ namespace Opa.ToDoList.Web.Controllers.API
                     var result = await userHelper.ValidatePasswordAsync(
                        user,
                        request.Password);
-                    
+
                     if (result.Succeeded)
                     {
                         return Ok(new Response<string>
                         {
                             IsSuccess = true,
-                            
+
                         });
-                    };                    
+                    };
                 }
 
-                return BadRequest(new Response<string> 
+                return BadRequest(new Response<string>
                 {
                     IsSuccess = false
                 });
@@ -111,19 +110,49 @@ namespace Opa.ToDoList.Web.Controllers.API
             }
 
             var nuevoUsuario = await this.userHelper.GetUserByEmailAsync(request.Email);
-            if (request.RoleId == 1)
-            {
-                await this.userHelper.AddUserToRoleAsync(nuevoUsuario, "Owner");
-                this.dataContext.Owners.Add(new Owner { User = nuevoUsuario });
-            }
+
+            await this.userHelper.AddUserToRoleAsync(nuevoUsuario, "Owner");
+            
+            this.dataContext.Owners.Add(new Owner { User = nuevoUsuario });
 
             await this.dataContext.SaveChangesAsync();
+
 
             return Ok(new Response<object>
             {
                 IsSuccess = true,
                 Message = "Usuario registrado con éxito."
             });
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutUser([FromBody] UserRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userEntity = await this.userHelper.GetUserByEmailAsync(request.Email);
+            if (userEntity == null)
+            {
+                return BadRequest("Usuario no encontrado.");
+            }
+
+            userEntity.FirstName = request.FirstName;
+            userEntity.LastName = request.LastName;
+            userEntity.Address = request.Address;
+            userEntity.PhoneNumber = request.Phone;
+            userEntity.Document = request.Document;
+
+            var respose = await this.userHelper.UpdateUserAsync(userEntity);
+            if (!respose.Succeeded)
+            {
+                return BadRequest(respose.Errors.FirstOrDefault().Description);
+            }
+
+            var updatedUser = await this.userHelper.GetUserByEmailAsync(request.Email);
+            return Ok(updatedUser);
         }
     }
 }

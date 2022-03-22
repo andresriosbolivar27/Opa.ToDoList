@@ -8,8 +8,14 @@ Opa ToDo App
 - ASP Net Core 5
 - Visual Studio 2019 Community
 - Sql Server 2019 Developer
-- IIS
 - Prism - open source (Android , iOS, UWP)
+
+## Despliegue host
+- [Smarterasp](https://www.smarterasp.net/)
+
+## App
+- [APK](https://drive.google.com/file/d/149b0L4IzbyV4s7fHR-zjAdfypxCSKKsv/view?usp=sharing)
+
 
 
 
